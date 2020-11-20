@@ -6,18 +6,12 @@
 		<link rel="shortcut icon" href="favicon.ico">
 		<title>Objekt Math</title>
         <style>
-			#random-button {
-				background-color:#ffffff;
-				border-radius:5px;
-				border-style:none;
-				color:#773377;
-				font-weight:bold;
-				padding:4px;
+            #constants, #metods {
+				float:left;
+				line-height:24px;
+				margin:0 auto;
 				text-align:center;
-				width:64px}
-			#random-button:active {
-				background-color:#dddddd;
-				color:#551155}
+				width:512px}
 			#equations, #given, #outcomes, #values {
 				float:left;
 				margin:8px;
@@ -57,16 +51,42 @@
 				padding:16px;
 				text-align:left;
 				width:256px}
-            #constants, #metods {
-				float:left;
-				line-height:24px;
-				margin:0 auto;
+			#math-js-button {
+				background-color:#ffffff;
+				border-radius:5px;
+				border-style:none;
+				color:#b82e12;
+				font-family:'Verdana','sans-serif';
+				font-weight:lighter;
+				padding:8px}
+			#math-js-button:hover, #math-js-button:active, #math-js-button:visited {
+				color:#dc3912}
+			#random-button {
+				background-color:#ffffff;
+				border-radius:5px;
+				border-style:none;
+				color:#773377;
+				font-weight:bold;
+				padding:4px;
 				text-align:center;
-				width:512px}
+				width:64px}
+			#random-button:active {
+				background-color:#dddddd;
+				color:#551155}
             #title {
 				color:#ffffff;
 				font-size:32px;
 				text-align:center}
+			#w3-button {
+				background-color:#4caf50;
+				border-style:none;
+				color:#ffffff;
+				font-family:'Verdana','sans-serif';
+				font-weight:lighter;
+				padding:8px;
+				text-decoration:none}
+			#w3-button:hover, #w3-button:active {
+				background-color:#46a049}
 			.parameter-0, .parameter-1, .parameter-2 {
 				background-color:#ffffff;
 				border-radius:5px;
@@ -102,7 +122,9 @@
 			Zmienne pomocnicze:<br>
 			<input id="input-1" type="number" value="-2" min="-10" max="10" step="1">
 			<input id="input-2" type="number" value="7" min="-10" max="10" step="1"><br><br>
-			Math.random: <button id="random-button" type="button">Losuj</button><br><br>
+			Math.random: <button id="random-button" type="button">Losuj</button><br><br><br>
+			<a id="w3-button" href="https://www.w3schools.com/jsref/jsref_obj_math.asp" target="blank">W3 Math</a><br><br>
+			<a id="math-js-button" href="https://mathjs.org/index.html" target="blank">math.js</a><br><br>
 		</div>
 		<div id="metods">
 			<h2>Metody</h2>
