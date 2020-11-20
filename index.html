@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="user-scalable=no">
+		<link rel="shortcut icon" href="favicon.ico">
+		<title>Objekt Math</title>
+        <style>
+			#random-button {
+				background-color:#ffffff;
+				border-radius:5px;
+				border-style:none;
+				color:#773377;
+				font-weight:bold;
+				padding:4px;
+				text-align:center;
+				width:64px}
+			#random-button:active {
+				background-color:#dddddd;
+				color:#551155}
+			#equations, #given, #outcomes, #values {
+				float:left;
+				margin:0;
+				text-align:left;
+				width:240px}
+			#input-0 {
+				-webkit-appearance:none;
+  				appearance:none;
+  				background-color:#ffffff;
+				border-radius:2px;
+				border-style:none;
+				height:4px;
+				width:230px}
+			#input-0::-moz-range-thumb, #input-0::-webkit-slider-thumb {
+				-webkit-appearance:none;
+  				appearance:none;
+				background-color:#662266;
+				border-radius:8px;
+				border-style:none;
+				height:16px;
+				width:16px}
+			#input-1, #input-2 {
+				background-color:#ffffff;
+				border-radius:5px;
+				border-style:none;
+				text-align:right;
+				width:48px}
+			#inputs {
+				background-color:#773377;
+				border-radius:10px;
+				border-style:none;
+				color:#ffffff;
+				float:left;
+				font-weight:bold;
+				line-height:24px;
+				margin:32px;
+				padding:16px;
+				text-align:left;
+				width:256px}
+            #constants, #metods {
+				float:left;
+				line-height:24px;
+				margin:0 auto;
+				text-align:center;
+				width:480px}
+            #title {
+				color:#ffffff;
+				font-size:32px;
+				text-align:center}
+			.parameter-0, .parameter-1, .parameter-2 {
+				background-color:#ffffff;
+				border-radius:5px;
+				border-style:none;
+				height:16px;
+				text-align:right;
+				transition:0.1s;
+				width:32px}
+			.parameter-0:active, .parameter-0:hover, .parameter-1:active, .parameter-1:hover, .parameter-2:active, .parameter-2:hover {
+				background-color:#eeeeee}
+			* {
+				-moz-user-select:none;
+				-ms-user-select:none;
+				-webkit-user-select:none;
+				background-color:rgba(255,255,255,0);
+				border-style:none;
+				color:#000000;
+				font-family:'Trebuchet MS','Lucida Sans Unicode','Lucida Grande','Lucida Sans','Arial','sans-serif';
+				font-size:16px;
+				user-select:none}
+			body {
+				background-color:#ffddff;
+				margin:0}
+			h2 {
+				font-size:24px}
+        </style>
+    </head>
+    <body onload="generateSite();">
+		<div id="inputs">
+			<h1 id="title">OBJEKT MATH</h1>
+			Główna zmienna:<br>
+			<input id="input-0" type="range" value="1" min="-10" max="10" step="0.1"><br><br>
+			Zmienne pomocnicze:<br>
+			<input id="input-1" type="number" value="-2" min="-10" max="10" step="1">
+			<input id="input-2" type="number" value="7" min="-10" max="10" step="1"><br><br>
+			Math.random: <button id="random-button" type="button">Losuj</button><br><br>
+		</div>
+		<div id="metods">
+			<h2>Metody</h2>
+			<div id="equations"></div>
+			<div id="outcomes"></div>
+		</div>
+		<div id="constants">
+			<h2>Stałe</h2>
+			<div id="given"></div>
+			<div id="values"></div>
+		</div>
+		<script>
+			const mathPrefix = "Math.";
+			const mathFunctions = ["random","n","pow","sqrt","cbrt","n","abs","round","floor","ceil","min","max","n","sin","cos","tan","ctg","n","log2","log10","log","exp","n","sign","trunc","fround","n"];
+			const mathConstants = ["PI","PHI","E","n","SQRT2","SQRT1_2","n","LN2","LN10","LOG2E","LOG10E","n"];
+			const defaultValues = [1,-2,7];
+
+			var inputs = [];
+			var parameters = [];
+			var randomNumber;
+			function ctg(x) {return 1 / Math.tan(x);}
+			function PHI() {return (1 + Math.sqrt(5)) / 2;}
+			function assignPlaces() {
+				for (let i = 0; i < 3; i++) {
+					inputs[i] = document.getElementById("input-" + i);
+					parameters[i] = [];
+					parameters[i] = document.getElementsByClassName("parameter-" + i);
+					}
+				}
+			function generateEmptyLine(place0, place1) {
+				let br = document.createElement("br");
+				place0.appendChild(br);
+				br = document.createElement("br");
+            	place1.appendChild(br);
+				}
+			function inputNumberGenerator(a) {
+				switch (a) {
+					case "atan2" :
+					case "pow" : return 2; break;
+					case "max" :
+					case "min" : return 3; break;
+					default : return 1; break;
+					}
+				}
+			function inputValueGenerator(b) {
+				if(b == 0) return defaultValues[0];
+				else if (b == 1) return defaultValues[1];
+				else return defaultValues[2];
+				}
+			function generateFunctions() {
+				let equations = document.getElementById("equations");
+				let outcomes = document.getElementById("outcomes");
+    			for (let i = 0; i < mathFunctions.length; i++) { 
+        			if (mathFunctions[i] === "n") {
+            			generateEmptyLine(equations, outcomes);
+            			continue;
+            			}
+        			let span = document.createElement("span");
+					span.innerHTML = [mathPrefix, mathFunctions[i]].join("");
+					if (mathFunctions[i] == "random") span.innerHTML += "() * ";
+					else span.innerHTML += "(";
+					for (let j = 0; j < inputNumberGenerator(mathFunctions[i]); j++) {
+						if (j > 0) span.innerHTML += ", ";
+						let input = document.createElement("input");
+						input.className = [mathFunctions[i], " parameter-", j].join("");
+						input.type = "text";
+						input.setAttribute("value", inputValueGenerator(j));
+						span.appendChild(input);
+						}
+					if (mathFunctions[i] != "random") span.innerHTML += ")";
+					equations.appendChild(span);
+        			span = document.createElement("span");
+					span.innerHTML = "= ";
+					outcomes.appendChild(span);
+					let outcome = document.createElement("span");
+					outcome.id = mathFunctions[i];
+					span.appendChild(outcome);
+            		generateEmptyLine(equations, outcomes);
+        			}
+				}
+			function generateConstants() {
+				let given = document.getElementById("given");
+				let values = document.getElementById("values");
+				for (let i = 0; i < mathConstants.length; i++) {
+					if (mathConstants[i] === "n") {
+            			generateEmptyLine(given, values);
+            			continue;
+            			}
+					let span = document.createElement("span");
+					span.innerText = mathPrefix + mathConstants[i];
+					given.appendChild(span);
+					span = document.createElement("span");
+					span.innerText = "= ";
+					if (mathConstants[i] == "PHI") span.innerText += eval(mathConstants[i] + "()");
+					else span.innerText += eval(mathPrefix + mathConstants[i]);
+					values.appendChild(span);
+					generateEmptyLine(given, values);
+					}
+				}
+			function refreshOutcomes(c) {
+				let inputsParameters = [];
+				inputsParameters = document.getElementsByClassName(c);
+				for (let i = 0; i < inputsParameters.length; i++) if (inputsParameters[i].value.length == 0 || isNaN(parseFloat(inputsParameters[i].value))) continue;
+				let equation;
+				if (c == "random") equation = randomNumber + "*";
+				else if (c == "ctg") equation = c + "(";
+				else equation = mathPrefix + c + "(";
+				for (let i = 0; i < inputNumberGenerator(c); i++) {
+					if (i > 0) equation += ",";
+					equation += parseFloat(inputsParameters[i].value);
+					}
+				if (c != "random") equation += ")";
+				document.getElementById(c).innerText = eval(equation);
+				}
+			function refreshInputs(c) {
+				for (let i = 0; i < parameters[c].length; i++) {
+					parameters[c][i].value = inputs[c].value;
+					refreshOutcomes(parameters[c][i].className.split(" ")[0]);
+					}
+				}
+			function refreshRandom() {
+				randomNumber = Math.random();
+				refreshOutcomes("random");
+				}
+			function assignButtons() {
+				document.getElementById("random-button").addEventListener("click", refreshRandom);
+				for (let i = 0; i < inputs.length; i++) inputs[i].addEventListener("input", function() {
+					refreshInputs(i);
+					});
+				for (let i = 0; i < parameters.length; i++) 
+					for (let j = 0; j < parameters[i].length; j++) {
+						parameters[i][j].addEventListener("input", function() {
+							refreshOutcomes(this.className.split(" ")[0]);
+							});
+						}
+				}
+			function generateSite() {
+				generateFunctions();
+				generateConstants();
+				assignPlaces();
+				assignButtons();
+				refreshRandom();
+				for (let i = 0; i < inputs.length; i++) refreshInputs(i);
+				}
+		</script>
+    </body>
+</html>
