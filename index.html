@@ -11,7 +11,7 @@
 				line-height:24px;
 				margin:0 auto;
 				text-align:center;
-				width:512px}
+				width:464px}
 			#equations, #given, #outcomes, #values {
 				float:left;
 				margin:8px;
@@ -61,6 +61,8 @@
 				padding:8px}
 			#math-js-button:hover, #math-js-button:active, #math-js-button:visited {
 				color:#dc3912}
+			#outcomes, #values {
+				width:192px}
 			#random-button {
 				background-color:#ffffff;
 				border-radius:5px;
@@ -112,6 +114,13 @@
 				margin:0}
 			h2 {
 				font-size:24px}
+			@media screen and (max-width:1280px) {
+				#constants, #metods {
+					float:none}
+				#inputs {
+					float:none;
+					margin:8px auto}
+				}
         </style>
     </head>
     <body onload="generateSite();">
@@ -239,10 +248,10 @@
 				if (c != "random") equation += ")";
 				document.getElementById(c).innerText = eval(equation);
 				}
-			function refreshInputs(c) {
-				for (let i = 0; i < parameters[c].length; i++) {
-					parameters[c][i].value = inputs[c].value;
-					refreshOutcomes(parameters[c][i].className.split(" ")[0]);
+			function refreshInputs(d) {
+				for (let i = 0; i < parameters[d].length; i++) {
+					parameters[d][i].value = inputs[d].value;
+					refreshOutcomes(parameters[d][i].className.split(" ")[0]);
 					}
 				}
 			function refreshRandom() {
