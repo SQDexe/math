@@ -4,9 +4,9 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="user-scalable=no">
 		<link rel="shortcut icon" href="favicon.ico">
-		<title>Obiekt Math</title>
-        	<style>
-            		#constants, #metods {
+		<title>Objekt Math</title>
+        <style>
+            #constants, #metods {
 				float:left;
 				line-height:24px;
 				margin:0 auto;
@@ -166,7 +166,7 @@
     </head>
     <body onload="generateSite();">
 		<div id="inputs">
-			<h1 id="title">OBIEKT MATH</h1>
+			<h1 id="title">OBJEKT MATH</h1>
 			Główna zmienna:<br>
 			<input id="input-0" type="range" value="1" min="-10" max="10" step="0.1"><br><br>
 			Zmienne pomocnicze:<br>
@@ -195,8 +195,8 @@
 			var inputs = [];
 			var parameters = [];
 			var randomNumber;
-			function ctg(x) {return 1 / Math.tan(x);}
-			function PHI() {return (1 + Math.sqrt(5)) / 2;}
+			Math.ctg = function(x) {return 1 / Math.tan(x);}
+			Math.PHI = 1 + Math.sqrt(5) / 2;
 			function assignPlaces() {
 				for (let i = 0; i < 3; i++) {
 					inputs[i] = document.getElementById("input-" + i);
@@ -233,13 +233,13 @@
             			continue;
             			}
         			let span = document.createElement("span");
-					span.innerHTML = [mathPrefix, mathFunctions[i]].join("");
+					span.innerHTML = [mathPrefix,mathFunctions[i]].join("");
 					if (mathFunctions[i] == "random") span.innerHTML += "() * ";
 					else span.innerHTML += "(";
 					for (let j = 0; j < inputNumberGenerator(mathFunctions[i]); j++) {
 						if (j > 0) span.innerHTML += ", ";
 						let input = document.createElement("input");
-						input.className = [mathFunctions[i], " parameter-", j].join("");
+						input.className = [mathFunctions[i]," parameter-",j].join("");
 						input.type = "text";
 						input.setAttribute("value", inputValueGenerator(j));
 						span.appendChild(input);
@@ -268,8 +268,7 @@
 					given.appendChild(span);
 					span = document.createElement("span");
 					span.innerText = "= ";
-					if (mathConstants[i] == "PHI") span.innerText += eval(mathConstants[i] + "()");
-					else span.innerText += eval(mathPrefix + mathConstants[i]);
+					span.innerText += eval(mathPrefix + mathConstants[i]);
 					values.appendChild(span);
 					generateEmptyLine(given, values);
 					}
@@ -280,7 +279,6 @@
 				for (let i = 0; i < inputsParameters.length; i++) if (inputsParameters[i].value.length == 0 || isNaN(parseFloat(inputsParameters[i].value))) continue;
 				let equation;
 				if (c == "random") equation = randomNumber + "*";
-				else if (c == "ctg") equation = c + "(";
 				else equation = mathPrefix + c + "(";
 				for (let i = 0; i < inputNumberGenerator(c); i++) {
 					if (i > 0) equation += ",";
@@ -301,14 +299,10 @@
 				}
 			function assignButtons() {
 				document.getElementById("random-button").addEventListener("click", refreshRandom);
-				for (let i = 0; i < inputs.length; i++) inputs[i].addEventListener("input", function() {
-					refreshInputs(i);
-					});
+				for (let i = 0; i < inputs.length; i++) inputs[i].addEventListener("input", function() {refreshInputs(i);});
 				for (let i = 0; i < parameters.length; i++) 
 					for (let j = 0; j < parameters[i].length; j++) {
-						parameters[i][j].addEventListener("input", function() {
-							refreshOutcomes(this.className.split(" ")[0]);
-							});
+						parameters[i][j].addEventListener("input", function() {refreshOutcomes(this.className.split(" ")[0]);});
 						}
 				}
 			function generateSite() {
